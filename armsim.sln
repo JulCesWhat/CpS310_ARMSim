@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "armsim", "armsim\armsim.csproj", "{FAEF1F24-2F0D-41AC-8F4D-A54404467EE0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FAEF1F24-2F0D-41AC-8F4D-A54404467EE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAEF1F24-2F0D-41AC-8F4D-A54404467EE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAEF1F24-2F0D-41AC-8F4D-A54404467EE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAEF1F24-2F0D-41AC-8F4D-A54404467EE0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36F49CD3-6836-42C8-B6DA-58CAB0994153}
+	EndGlobalSection
+EndGlobal
