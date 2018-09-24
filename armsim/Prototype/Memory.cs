@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace armsim.Prototype
 {
-    class Memory
+    public class Memory: Observer
     {
+        private Subject subject;
         uint RAMSize;
         private byte[] RAM;
 
@@ -27,6 +28,57 @@ namespace armsim.Prototype
             RAM = new byte[_RAMsize];
             RAMSize = _RAMsize;
         }
+
+        public Memory(Subject _subject, uint _RAMsize)
+        {
+            // tie reference to subject and add observer to observers list
+            this.subject = _subject;
+            this.subject.registerObserver(this);
+
+            // initialize fields
+            RAM = new byte[_RAMsize];
+            this.subject = _subject;
+            this.RAMSize = _RAMsize;
+        }
+
+        public Observer Observer
+        {
+            get => default(Observer);
+            set
+            {
+            }
+        }
+
+        internal CPU CPU
+        {
+            get => default(CPU);
+            set
+            {
+            }
+        }
+
+
+        #region Observer Functions
+
+        // FUNCTION OVERRIDE IN OBSERVER: Empty method. This method is needed for observer pattern
+        public void Notify_StopExecution()
+        {
+
+        }
+
+        //FUNCTION OVERRIDE IN OBSERVER:: Empty method. This method is needed for observer pattern
+        public void Notify_OneCycle()
+        {
+
+        }
+
+        //FUNCTION OVERRIDE IN OBSERVER:: Empty method. This method is needed for observer pattern
+        public void Notify_WriteCharToTerminal()
+        {
+
+        }
+
+        #endregion
 
         // TODO: for now return int.MinValue
         // returns integer from RAM if <address> is divisible by 4
@@ -251,6 +303,29 @@ namespace armsim.Prototype
         public void clearMemory()
         {
             Array.Clear(RAM, 0, RAM.Length);
+        }
+
+        /// RETURN: - Return 4 integer array starting at the address provided if address is multiple of 4.
+        ///         - If the start address is not multiple of 4, change the address to an address 
+        ///           multiple of 4 closest to the start address (In this case, the changed address is less than
+        ///           the start address)
+        ///           - i.e. if the provided start address is 5, then return integers starting at address 4 (<startAddress>  - <startAddress % 4>).        
+        internal uint[] getFourWordsFromMemory(uint startAddress)
+        {
+            uint wordSizeInBytes = 4;
+
+            // change the address to an address multiple of 4 closest to the start address
+            if (startAddress % 4 != 0)
+                startAddress = startAddress - (startAddress % 4);
+
+            uint word1 = this.ReadWord(startAddress);
+            uint word2 = this.ReadWord(startAddress + wordSizeInBytes);
+            uint word3 = this.ReadWord(startAddress + (2 * wordSizeInBytes));
+            uint word4 = this.ReadWord(startAddress + (3 * wordSizeInBytes));
+
+            uint[] FourWordsFromMemory = { word1, word2, word3, word4 };
+
+            return FourWordsFromMemory;
         }
     }
 }

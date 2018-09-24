@@ -23,6 +23,14 @@ namespace armsim.Extra_Classes
         public ushort e_shentsize;
         public ushort e_shnum;
         public ushort e_shstrndx;
+
+        public Prototype.Memory Memory
+        {
+            get => default(Prototype.Memory);
+            set
+            {
+            }
+        }
     }
 
     public struct PHE
@@ -35,5 +43,13 @@ namespace armsim.Extra_Classes
         public uint p_memsz;
         public uint p_flags;
         public uint p_align;
+
+        public Prototype.Memory Memory
+        {
+            get => default(Prototype.Memory);
+            set
+            {
+            }
+        }
     }
 }

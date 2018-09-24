@@ -10,6 +10,14 @@ namespace armsim.Unit_Tests
 {
     class TestMemory
     {
+        internal Program Program
+        {
+            get => default(Program);
+            set
+            {
+            }
+        }
+
         public static void runTests()
         {
             Memory sim = new Memory(12);

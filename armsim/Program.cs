@@ -6,11 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace armsim
 {
     class Program
     {
+        public ArmSimForm ArmSimForm
+        {
+            get => default(ArmSimForm);
+            set
+            {
+            }
+        }
+
+        [STAThread]
         static void Main(string[] args)
         {
             Options arguments = new Options(args);
@@ -25,16 +35,18 @@ namespace armsim
                 Environment.Exit(0);
             }
 
-            Computer computer = new Computer(arguments);
+            // subject and observers. Observers computer and form1 add themselves to the collection of observers and hold an object reference to it.
+            Subject subject = new Subject();
+            Computer computer = new Computer(subject, arguments);
 
-            if (arguments.fileName != null)
-            {
-                int succesfullyOpenedFile = computer.loadSegmentsIntoRAM(arguments.fileName);
-            }
-            else
-            {
-                Console.WriteLine("File was not provided ...");
-            }
+
+            // preset to launch form
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            // create a form and launch it
+            ArmSimForm form = new ArmSimForm(subject, computer, arguments);
+            Application.Run(form);
         }
     }
 }

@@ -12,12 +12,14 @@ namespace armsim.Extra_Classes
         public string fileName;
         public uint memSize;
         public bool showTest;
+        public bool execEnabled;
 
         public Options(string[] args)
         {
             uint defaultMemorySize = 32768; // default # of bytes
             fileName = null;
             memSize = defaultMemorySize;
+            execEnabled = false;
             bool show_help = false;
 
             // register comand line args
@@ -30,6 +32,8 @@ namespace armsim.Extra_Classes
                     v => showTest = v != null },
                 { "h|help",  "show {HELP} message and exit",
                     v => show_help = v != null },
+                { "e|exec",  "switch to load {File}, run and close it once finished.",
+                    v => execEnabled = v != null },
             };
 
             List<string> arguments;
@@ -55,6 +59,14 @@ namespace armsim.Extra_Classes
             {
                 Console.WriteLine("This application supports up to 1 MB of RAM. You requested more than 1 MB. Exiting ...");
                 Environment.Exit(0);
+            }
+        }
+
+        internal Program Program
+        {
+            get => default(Program);
+            set
+            {
             }
         }
 
