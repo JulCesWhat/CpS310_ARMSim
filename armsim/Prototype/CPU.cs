@@ -19,6 +19,9 @@ namespace armsim.Prototype
         TraceLog traceLog;
         Subject subject;
 
+        string disassembledCombinedString; // holds all the disassembled text
+        string lastDisString; // holds last disassembled instruction 
+
         uint currentInstructionType;
         uint currentInstAddress;
         uint currentInstruction;
@@ -33,20 +36,32 @@ namespace armsim.Prototype
             this.currentInstAddress = 0;
             this.currentInstruction = 0;
             this.currentInstructionType = 0;
+
+            // initialize fields
+            this.currentInstAddress = 0;
+            this.currentInstruction = 0;
+            this.currentInstructionType = 0;
+            this.disassembledCombinedString = "";
+            this.lastDisString = "";
+
+            // initialize tracelog
+            traceLog = new TraceLog();
         }
 
+        // FUNCTION: Fetch the instruction and its address
+        //           update fields <currentInstruction> and <currentInstAddress>
+        // RETURNS:  an integer to be tested. i.e. return zero if we fetch a zero (this means that we are done        
         public uint fetch()
         {
-            //Get program counter
+            uint programCounter = registers.getProgramCounter();
+            uint word = memory.ReadWord(programCounter);
 
-            //Read word
+            this.currentInstruction = word;
+            this.currentInstAddress = programCounter;
 
-            //Set current instruction and address
+            this.registers.incrementProgramCounterInAWordSize();
+            return word;
 
-            //Increase program counter
-
-            //Return word
-            return 0;
         }
 
         public void decode()
@@ -68,6 +83,15 @@ namespace armsim.Prototype
             //Add
 
             //And other spcial Cases???
+
+            // add address, instruction, and disassembled instruction strings to each list
+        //    string addr = "0x" + currentInstAddress.ToString("X").PadLeft(8, '0');
+        //    string inst = currentInstruction.ToString("x").PadLeft(8, '0');
+
+
+        //    disassembledCombinedString = disassembledCombinedString + "\r\n" + addr + "\t" + inst + "\t";
+
+
             return true;
         }
 
@@ -78,5 +102,17 @@ namespace armsim.Prototype
             instAddressLst.Clear();
             instDisLst.Clear();
         }
+
+        #region Misellinious
+
+        /* Trace Log Methods */
+        internal bool isTraceLogEnabled() { return traceLog.isEnabled(); }
+        internal void resetTraceCounterToOne() { traceLog.resetTraceCounterToOne(); }
+        internal void turnOffTraceLog() { traceLog.turnOffTraceLog(); }
+        internal void turnOnTraceLog() { traceLog.turnOnTraceLog(); }
+        internal void traceLogFlush() { traceLog.flush(); }
+        internal void traceLogClose() { traceLog.close(); }
+
+        #endregion
     }
 }

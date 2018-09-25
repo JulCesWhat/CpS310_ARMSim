@@ -43,22 +43,6 @@ namespace armsim.Prototype
             this.worker.RunWorkerCompleted += this.worker_RunWorkerCompleted;
         }
 
-        public Observer Observer
-        {
-            get => default(Observer);
-            set
-            {
-            }
-        }
-
-        internal Program Program
-        {
-            get => default(Program);
-            set
-            {
-            }
-        }
-
         #region Background thread helper methods
 
         //-----------------------------------------------------Background thread helper methods -----------------------------------------//
@@ -132,19 +116,19 @@ namespace armsim.Prototype
         public int run()
         {
 
-        //    uint wordRead = 1;
-        //    bool stopExecutingInstructs = false;
+            uint wordRead = 1;
+            bool stopExecutingInstructs = false;
 
             // call these event until a instruction that contains a zero is read
-        //    while ((wordRead != 0) && (!worker.CancellationPending) && (!stopExecutingInstructs))
-        //    {
-        //        wordRead = cpu.fetch();
-        //        cpu.decode();
-        //        stopExecutingInstructs = cpu.execute();
-        //    }
+            while ((wordRead != 0) && (!worker.CancellationPending) && (!stopExecutingInstructs))
+            {
+                wordRead = cpu.fetch();
+                cpu.decode();
+                stopExecutingInstructs = cpu.execute();
+            }
 
             // Cancel Thread to update panels if it's not canceled yet.
-        //    worker.CancelAsync();
+            worker.CancelAsync();
 
             return 0;
         }
@@ -154,9 +138,9 @@ namespace armsim.Prototype
         public void step()
         {
             // call these events only once
-        //    cpu.fetch();
-        //    cpu.decode();
-        //    cpu.execute();
+            cpu.fetch();
+            cpu.decode();
+            cpu.execute();
         }
 
 
@@ -278,12 +262,12 @@ namespace armsim.Prototype
         #region Micellinouns
 
         /* Trace Log Methods */
-        //internal bool isTraceLogEnabled() { return cpu.isTraceLogEnabled(); }
-        //public void resetTraceCounterToOne() { cpu.resetTraceCounterToOne(); }
-        //internal void turnOffTraceLog() { cpu.turnOffTraceLog(); }
-        //internal void turnOnTraceLog() { cpu.turnOnTraceLog(); }
-        //internal void traceLogFlush() { cpu.traceLogFlush(); }
-        //internal void traceLogClose() { cpu.traceLogClose(); }
+        internal bool isTraceLogEnabled() { return cpu.isTraceLogEnabled(); }
+        public void resetTraceCounterToOne() { cpu.resetTraceCounterToOne(); }
+        internal void turnOffTraceLog() { cpu.turnOffTraceLog(); }
+        internal void turnOnTraceLog() { cpu.turnOnTraceLog(); }
+        internal void traceLogFlush() { cpu.traceLogFlush(); }
+        internal void traceLogClose() { cpu.traceLogClose(); }
 
         /* Debug Log Methods */
         internal void debugLogFlush() { debugLog.flush(); }

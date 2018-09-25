@@ -69,10 +69,9 @@ namespace armsim
 
         }
 
+        #region Observer Pattern Methods
+
         /****************************** Observer Pattern Methods *************************************/
-        // Computer notifies form on Notify_StopExecution()
-        // Computer notifies form on Notify_OneCycle()
-        // Memory notifies form on Notify_WriteCharToTerminal()
 
         // FUNCTION OVERRIDE IN OBSERVER:: update panels when the BackgroundWorker computer halts (Stop or Break)
         public void Notify_StopExecution()
@@ -91,6 +90,10 @@ namespace armsim
         {
             WriteCharToTerminal("Hello World");
         }
+
+        #endregion
+
+        #region Event Handlers
 
         /****************************** Event Handlers *************************************/
 
@@ -146,9 +149,9 @@ namespace armsim
                 this.fileOpenedLabel.Text = "File opened: " + this.currentFileName; // update file name in GUI
 
                 // reset trace 
-            //    computer.resetTraceCounterToOne();
-            //    computer.turnOffTraceLog();
-            //    computer.turnOnTraceLog();
+                computer.resetTraceCounterToOne();
+                computer.turnOffTraceLog();
+                computer.turnOnTraceLog();
                 toggleTraceOnoffToolStripMenuItem.Text = "Turn OFF trace log";
 
                 // clear cpu list for dissembly panel
@@ -190,18 +193,18 @@ namespace armsim
 
         private void toggleTraceOnoffToolStripMenuItem_Click(object sender, EventArgs e)
         {
-        //    if (computer.isTraceLogEnabled())
-        //    {
+            if (computer.isTraceLogEnabled())
+            {
                 // if enabled turn off trace log
-        //        computer.turnOffTraceLog();
-        //        toggleTraceOnoffToolStripMenuItem.Text = "Turn ON trace log";
-        //    }
-        //    else
-        //    {
+                computer.turnOffTraceLog();
+                toggleTraceOnoffToolStripMenuItem.Text = "Turn ON trace log";
+            }
+            else
+            {
                // if disabled, turn on trace log
-        //        computer.turnOnTraceLog();
-        //        toggleTraceOnoffToolStripMenuItem.Text = "Turn OFF trace log";
-        //    }
+                computer.turnOnTraceLog();
+                toggleTraceOnoffToolStripMenuItem.Text = "Turn OFF trace log";
+            }
         }
 
         private void runToolStripMenuItem_Click(object sender, EventArgs e)
@@ -231,7 +234,7 @@ namespace armsim
             simStatus.Text = "Simulator status: Running...";
 
             // run in a separate thread to 
-        //    computer.runWorkerOnSeparateThread();
+            computer.runWorkerOnSeparateThread();
         }
 
         // Tell observers that the thread run() should be stopped.
@@ -239,14 +242,14 @@ namespace armsim
         private void breakExecutionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Cancel BackgrounWorker and update panels
-        //    computer.cancelWorkerThread();
+            computer.cancelWorkerThread();
             
         }
 
         private void singleStepToolStripMenuItem_Click(object sender, EventArgs e)
         {
-        //    computer.step();
-        //    updatePanelsAndResetMenuItems();
+            computer.step();
+            updatePanelsAndResetMenuItems();
         }
 
         /// FUNCTION: - read textboxes from memory address and number of rows .
@@ -301,6 +304,10 @@ namespace armsim
                 "ARM7TDMI Simulator", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;
         }
+
+        #endregion
+
+        #region Functions to update panels in the form
 
         //-------------------------------- Functions to update panels in the form ---------------------------------------------------------------
 
@@ -470,10 +477,12 @@ namespace armsim
             //disTextBox.Text = disStr;
         }
 
-      
+        #endregion
+
+        #region Functions to close form
 
         //-------------------------------- Functions to close the form ---------------------------------------------------------------
-        
+
         // exit menu
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -557,14 +566,8 @@ namespace armsim
         // }
 
 
+        #endregion
 
+    }
 
-
-
-
-
-
-   
-    } // end of class
-    
 }

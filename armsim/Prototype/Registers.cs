@@ -86,22 +86,6 @@ namespace armsim.Prototype
 
         }
 
-        public Observer Observer
-        {
-            get => default(Observer);
-            set
-            {
-            }
-        }
-
-        internal CPU CPU
-        {
-            get => default(CPU);
-            set
-            {
-            }
-        }
-
         // FUNCTION OVERRIDE IN OBSERVER: Empty method. This method is needed for observer pattern
         public void Notify_StopExecution()
         {
