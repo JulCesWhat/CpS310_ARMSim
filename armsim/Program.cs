@@ -12,14 +12,6 @@ namespace armsim
 {
     class Program
     {
-        public ArmSimForm ArmSimForm
-        {
-            get => default(ArmSimForm);
-            set
-            {
-            }
-        }
-
         [STAThread]
         static void Main(string[] args)
         {

@@ -487,14 +487,18 @@ namespace armsim
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // flush and close trace and debug logs
-            //computer.debugLogFlush();
-            //computer.debugLogClose();
+            computer.debugLogFlush();
+            computer.debugLogClose();
 
-            //computer.traceLogFlush();
-            //computer.traceLogClose();
+            computer.traceLogFlush();
+            computer.traceLogClose();
 
             this.Close();
         }
+
+        #endregion
+
+        #region Functions for terminal
 
         //-------------------------------- Functions to write to serial terminal in the form -------------------------------------------
 
@@ -569,5 +573,4 @@ namespace armsim
         #endregion
 
     }
-
 }

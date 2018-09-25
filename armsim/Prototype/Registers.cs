@@ -86,6 +86,8 @@ namespace armsim.Prototype
 
         }
 
+        #region Observer Functions
+
         // FUNCTION OVERRIDE IN OBSERVER: Empty method. This method is needed for observer pattern
         public void Notify_StopExecution()
         {
@@ -104,7 +106,9 @@ namespace armsim.Prototype
 
         }
 
+        #endregion
 
+        #region Register Functions
 
         public void updateProgramCounter(uint programCounter)
         {
@@ -118,7 +122,6 @@ namespace armsim.Prototype
 
         public void clearRegisters()
         {
-
             r0 = 0;
             r1 = 0;
             r2 = 0;
@@ -148,21 +151,21 @@ namespace armsim.Prototype
         internal uint[] getRegistersIntArray()
         {
             uint[] registersArray = {   r0  ,
-                                    r1  ,
-                                    r2  ,
-                                    r3  ,
-                                    r4  ,
-                                    r5  ,
-                                    r6  ,
-                                    r7  ,
-                                    r8  ,
-                                    r9  ,
-                                    r10sl ,
-                                    r11fp ,
-                                    r12ip,
-                                    r13sp,
-                                    r14lr,
-                                    r15pc  };
+                                        r1  ,
+                                        r2  ,
+                                        r3  ,
+                                        r4  ,
+                                        r5  ,
+                                        r6  ,
+                                        r7  ,
+                                        r8  ,
+                                        r9  ,
+                                        r10sl ,
+                                        r11fp ,
+                                        r12ip,
+                                        r13sp,
+                                        r14lr,
+                                        r15pc  };
 
 
 
@@ -179,22 +182,22 @@ namespace armsim.Prototype
 
         internal string[] getRegisterNames()
         {
-            string[] registerNames = {      "R0"   ,
-                                        "R1"   ,
-                                        "R2"   ,
-                                        "R3"   ,
-                                        "R4"   ,
-                                        "R5"   ,
-                                        "R6"   ,
-                                        "R7"   ,
-                                        "R8"   ,
-                                        "R9"   ,
-                                        "SL"  ,
-                                        "FP"  ,
-                                        "IP"   ,
-                                        "SP"   ,
-                                        "LR"   ,
-                                        "PC"   };
+            string[] registerNames = {"R0",
+                                      "R1",
+                                      "R2",
+                                      "R3",
+                                      "R4",
+                                      "R5",
+                                      "R6",
+                                      "R7",
+                                      "R8",
+                                      "R9",
+                                      "SL",
+                                      "FP",
+                                      "IP",
+                                      "SP",
+                                      "LR",
+                                      "PC"};
 
             return registerNames;
 
@@ -375,6 +378,10 @@ namespace armsim.Prototype
             return r13sp;
         }
 
+        #endregion
+
+        #region NZCV flag getters and setters
+
         //******************************************************* NZCV flag getters and setters *****************************************//
         // Sets N flag (Negative flag) to <flag>
         internal void setNFlag(uint flag)
@@ -424,5 +431,7 @@ namespace armsim.Prototype
             C = 0;
             V = 0;
         }
+
+        #endregion
     }
 }

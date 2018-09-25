@@ -24,22 +24,6 @@ namespace armsim.Extra_Classes
             traceCounter = 0;
         }
 
-        internal Program Program
-        {
-            get => default(Program);
-            set
-            {
-            }
-        }
-
-        internal Program Program1
-        {
-            get => default(Program);
-            set
-            {
-            }
-        }
-
         public void resetTraceCounterToOne()
         {
             traceCounter = 1;
@@ -113,22 +97,6 @@ namespace armsim.Extra_Classes
         {
             debugLog = new TextWriterTraceListener(System.IO.File.CreateText("debug.log"));
             Debug.Listeners.Add(debugLog);
-        }
-
-        internal Program Program
-        {
-            get => default(Program);
-            set
-            {
-            }
-        }
-
-        internal Program Program1
-        {
-            get => default(Program);
-            set
-            {
-            }
         }
 
         public void WriteLineToLog(string str)

@@ -186,12 +186,16 @@ namespace armsim.Prototype
                     debugLog.WriteLineToLog("Loader: in loadSegmentsIntoRAM (): Size of Program header entry: " + elfHeader.e_phentsize);
                     debugLog.WriteLineToLog("Loader: in loadSegmentsIntoRAM (): Number of segments: " + elfHeader.e_phnum); //NumberelfHeader.e_entry.ToString("X4"));
 
-                    // clear memory
+                    // clear memory, registers, nzcv flags
                     memory.clearMemory();
+                    registers.clearRegisters();
+                    registers.clearNZCVFlags();
 
-                    //Here is where I will do all the resetting and setting
-                    //
-                    //
+                    // update program counter r15
+                    registers.updateProgramCounter(elfHeader.e_entry);
+
+                    // update stack pointer r13
+                    registers.updateStackPointer(0x7000);
 
                     // Read all program header entries and load segments to RAM
                     uint nextElfHeaderOffset = elfHeader.e_phoff;
@@ -224,7 +228,7 @@ namespace armsim.Prototype
 
                     uint cksum = memory.ComputeRAMChecksum(null);
                     debugLog.WriteLineToLog("\nCurrent RAM hex digest: " + cksum);
-                    Console.WriteLine("\nCurrent RAM hex digest: " + cksum);
+                    //Console.WriteLine("\nCurrent RAM hex digest: " + cksum);
 
                 }
 
