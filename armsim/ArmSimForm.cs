@@ -31,10 +31,7 @@ namespace armsim
 
             // tie reference to subject and add observer to list
             this.subject = _subject;
-            subject.registerObserver(this);
-
-            // Add event handler to write a charatecter to terminal when CPU a byte in Memory from address 0x00100001
-        //    ArmSimFormRef.OnWriteCharToTerminal += ArmSimFormRef_OnWriteCharToTerminal;
+            subject.registerObserver(this);     
 
             // set object reference to computer
             this.computer = _computer;
@@ -150,16 +147,6 @@ namespace armsim
                 computer.turnOffTraceLog();
                 computer.turnOnTraceLog();
                 toggleTraceOnoffToolStripMenuItem.Text = "Turn OFF trace log";
-
-                // clear cpu list for dissembly panel
-            //    computer.clearCPUInstructionAddressDisassembledLists();
-
-                // clear disassembled instruction string in CPU
-            //    computer.clearCPUDisassembledCombinedString();
-
-                // clear terminal text and queue
-            //    terminlaTextBox.Clear();
-            //    charsQueue.Clear();
                 
                 // enable menu item availability
                 updatePanelsAndResetMenuItems();
@@ -296,8 +283,6 @@ namespace armsim
             // update disassembly
             string str = computer.getDisassembledLastInstructionExecuted();
             disTextBox.Text += str;
-            
-
         }
 
 

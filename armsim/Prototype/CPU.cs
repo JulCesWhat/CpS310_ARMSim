@@ -18,7 +18,6 @@ namespace armsim.Prototype
         Memory memory;
         Registers registers;
         TraceLog traceLog;
-        Subject subject;
 
         string disassembledCombinedString; // holds all the disassembled text
         string lastDisString; // holds last disassembled instruction 
@@ -103,13 +102,6 @@ namespace armsim.Prototype
 
             //And other spcial Cases???
 
-            // add address, instruction, and disassembled instruction strings to each list
-            //    string addr = "0x" + currentInstAddress.ToString("X").PadLeft(8, '0');
-            //    string inst = currentInstruction.ToString("x").PadLeft(8, '0');
-
-
-            //    disassembledCombinedString = disassembledCombinedString + "\r\n" + "api" + "\t" + "shishi" + "\t";
-
             writeInfoToTraceLog();
 
             //Thread.Sleep(5000);
@@ -151,7 +143,7 @@ namespace armsim.Prototype
             // printing values to trace log by lines
             traceLog.WriteLineToLog(strTC + " " + strPC + " " + machine_state + " " +
                                     controlFlagsIntArray[0] + controlFlagsIntArray[1] + controlFlagsIntArray[2] + controlFlagsIntArray[3] +
-
+                                    " " + memory.ComputeRAMChecksum(null) +
                                      " 0=" + registersIntArray[0].ToString("X").PadLeft(8, '0') +
                                      " 1=" + registersIntArray[1].ToString("X").PadLeft(8, '0') +
                                      " 2=" + registersIntArray[2].ToString("X").PadLeft(8, '0') +
