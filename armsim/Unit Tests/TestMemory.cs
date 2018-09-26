@@ -27,6 +27,7 @@ namespace armsim.Unit_Tests
             for (uint i = 0; i < data.Length; i++)
                 sim.WriteByte(i, data[i]);
 
+            Console.WriteLine("------------------------------");
             Console.WriteLine("Testing Memory class methods");
             Console.WriteLine("------------------------------");
 
@@ -172,7 +173,7 @@ namespace armsim.Unit_Tests
             Debug.Assert(sim.ReadByte(11) == byteNum2);
             Console.WriteLine("Testing: test passed.");
 
-            Console.WriteLine("Testing: All tests passed.");
+            Console.WriteLine("Testing: All memory tests passed.\n");
         }
     }
 }

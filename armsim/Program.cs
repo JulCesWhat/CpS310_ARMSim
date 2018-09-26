@@ -22,6 +22,8 @@ namespace armsim
                 Console.WriteLine("RUNNING UNIT TESTS ...");
 
                 TestMemory.runTests();
+                TestCPU.runtTests();
+                TestRegisters.runTests();
 
                 Console.WriteLine("All UNIT TESTS passed! Exiting ...");
                 Environment.Exit(0);

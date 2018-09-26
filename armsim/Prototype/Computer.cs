@@ -103,7 +103,6 @@ namespace armsim.Prototype
 
         #endregion
 
-
         public string getMemChecksum()
         {
             return Convert.ToString(memory.ComputeRAMChecksum(null));
@@ -252,12 +251,13 @@ namespace armsim.Prototype
 
         #region UI Helper Methods
 
+        /************************ Helper methods for Form1 Class to Communicate with Registers and Memory Classes ******************/
         public void clearMemoryAndRegisters()
         {
-        //    registers.clearRegisters();
+            registers.clearRegisters();
             memory.clearMemory();
         }
-    //    internal uint getProgramCounter() { return registers.getProgramCounter(); }
+        internal uint getProgramCounter() { return registers.getProgramCounter(); }
         internal void start() { throw new NotImplementedException(); }
 
         #endregion
@@ -277,6 +277,31 @@ namespace armsim.Prototype
         internal void debugLogFlush() { debugLog.flush(); }
         internal void debugLogClose() { debugLog.close(); }
 
+        /* Memory and Register related methods */
+        internal uint[] getRegistersIntArray() { return registers.getRegistersIntArray(); }
+        internal uint[] getControlFlagsIntArray() { return registers.getControlFlagsIntArray(); }
+        internal string[] getRegisterNames() { return registers.getRegisterNames(); }
+        internal uint[] getFourWordsFromMemory(uint startAddress) { return memory.getFourWordsFromMemory(startAddress); }
+        internal string[] getControlFlagNames() { return registers.getControlFlagNames(); }
+
+
+
+
+
+        internal uint getStackInstruction(uint address)
+        {
+            return memory.ReadWord(address);
+        }
+
+        internal string getCPUDisassembledCombinedString()
+        {
+            return cpu.getCPUDisassembledCombinedString();
+        }
+
+        internal string getDisassembledLastInstructionExecuted()
+        {
+            return cpu.getDisassembledLastInstructionExecuted();
+        }
         #endregion
     }
 }

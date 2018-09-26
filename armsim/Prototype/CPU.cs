@@ -42,7 +42,25 @@ namespace armsim.Prototype
             this.currentInstAddress = 0;
             this.currentInstruction = 0;
             this.currentInstructionType = 0;
-            this.disassembledCombinedString = "";
+
+            //Dumi data
+            this.disassembledCombinedString = @"
+0xf0000000:    0xe3a08000 .... 	:mov      r8,#0
+0xf0000004:    0xe28f900c .... 	:add      r9,pc,#0xc
+0xf0000008:    0xe8b900ff .... 	:ldmia    r9!,{r0-r7}
+0xf000000c:    0xe8a800ff .... 	:stmia    r8!,{r0-r7}
+0xf0000010:    0xe8b900ff .... 	:ldmia    r9!,{r0-r7}
+0xf0000014:    0xe8a800ff .... 	:stmia    r8!,{r0-r7}
+0xf0000018:    0xe59ff018 .... 	:ldr      pc,0xf0000038         ; = #0xf0000070
+0xf000001c:    0xe59ff018 .... 	:ldr      pc,0xf000003c         ; = #0xf0000058
+0xf0000020:    0xe59ff018 .... 	:ldr      pc,0xf0000040         ; = #0xf000005c
+0xf0000024:    0xe59ff018 ....	:ldr      pc,0xf0000044         ; = #0xf0000060
+0xf0000028:    0xe59ff018 .... 	:ldr      pc,0xf0000048         ; = #0xf0000064
+0xf000002c:    0xe1a00000 .... 	:nop 	
+0xf0000030:    0xe59ff018 .... 	:ldr      pc,0xf0000050         ; = #0xf0000068
+0xf0000034:    0xe59ff018 .... 	:ldr      pc,0xf0000054         ; = #0xf000006c
+0xf0000038:    0xf0000070 ...p 	:andnv    r0,r0,r0,ror r0
+0xf000003c:    0xf0000058 ...X 	:andnv	  r0,r0,r8,asr r0";
             this.lastDisString = "";
 
             // initialize tracelog
@@ -90,7 +108,7 @@ namespace armsim.Prototype
             //    string inst = currentInstruction.ToString("x").PadLeft(8, '0');
 
 
-            //    disassembledCombinedString = disassembledCombinedString + "\r\n" + addr + "\t" + inst + "\t";
+            //    disassembledCombinedString = disassembledCombinedString + "\r\n" + "api" + "\t" + "shishi" + "\t";
 
             writeInfoToTraceLog();
 
@@ -175,6 +193,16 @@ namespace armsim.Prototype
         internal void traceLogFlush() { traceLog.flush(); }
         internal void traceLogClose() { traceLog.close(); }
 
+
+        internal string getCPUDisassembledCombinedString()
+        {
+            return disassembledCombinedString;
+        }
+
+        internal string getDisassembledLastInstructionExecuted()
+        {
+            return lastDisString;
+        }
         #endregion
     }
 }

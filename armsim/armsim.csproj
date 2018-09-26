@@ -78,7 +78,9 @@
     <Compile Include="Prototype\CPU.cs" />
     <Compile Include="Prototype\Memory.cs" />
     <Compile Include="Prototype\Registers.cs" />
+    <Compile Include="Unit Tests\TestCPU.cs" />
     <Compile Include="Unit Tests\TestMemory.cs" />
+    <Compile Include="Unit Tests\TestRegisters.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

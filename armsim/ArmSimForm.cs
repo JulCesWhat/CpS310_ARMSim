@@ -64,9 +64,6 @@ namespace armsim
                 // if only --load is mentioned but not --exec
                 tryLoadingFileIntoMemory(); // succesfull load return 0
             }
-
-
-
         }
 
         #region Observer Pattern Methods
@@ -161,14 +158,13 @@ namespace armsim
             //    computer.clearCPUDisassembledCombinedString();
 
                 // clear terminal text and queue
-                terminlaTextBox.Clear();
-                charsQueue.Clear();
+            //    terminlaTextBox.Clear();
+            //    charsQueue.Clear();
                 
                 // enable menu item availability
                 updatePanelsAndResetMenuItems();
                 resetToolStripMenuItem.Enabled = true;
                 toggleTraceOnoffToolStripMenuItem.Enabled = true;
-
 
                 return 0;
             }
@@ -243,7 +239,6 @@ namespace armsim
         {
             // Cancel BackgrounWorker and update panels
             computer.cancelWorkerThread();
-            
         }
 
         private void singleStepToolStripMenuItem_Click(object sender, EventArgs e)
@@ -252,49 +247,10 @@ namespace armsim
             updatePanelsAndResetMenuItems();
         }
 
-        /// FUNCTION: - read textboxes from memory address and number of rows .
-        ///           - show updated memory panel if inputs are correct, otherwise show an error dialog box
-        ///           - updates this.memoryPanelNoRowsToShow if given correct input
+        /// Might need to implement this later
         private void goButton_Click(object sender, EventArgs e)
         {
-            // read the textbox numbers
-            string startMem = startingMemoryTextBox.Text;
-            string numRows = noRowsShowTextBox.Text;
-
-            string pattern = @"^[0-9]\d*$"; // match only positive ints: match first digit to be 1-9, and then have any or no digits follow it
-            string hexPattern = @"0[xX][0-9a-fA-F]+"; // match only hex numbers
-
-            // Show a dialog box if user doesn't provide valid starting mem addr and number of rows to show from mem
-            if (System.Text.RegularExpressions.Regex.IsMatch(startMem, pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase) &&
-                System.Text.RegularExpressions.Regex.IsMatch(numRows, pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-            {
-                // convert textbox numbers to ints
-                uint startMemInt = Convert.ToUInt32(startMem); // TODO: NEED TO CHECK FOR OUT OF BOUNDS
-                uint numRowsInt = Convert.ToUInt32(numRows);
-
-                this.memoryPanelNoRowsToShow = numRowsInt; // Update the number of rows to show
-
-                /*
-                if (startMemInt % 4 != 0)
-                {
-                    string msg = "Please enter a memory address number multiple of 4.";
-                    MessageBox.Show(msg, "Error Displaying Memory",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                */
-
-                updateMemoryPanel(startMemInt);
-            }
-            else // incorrect inputs
-            {
-                MessageBox.Show("Please enter a valid starting memory address and number of rows to show from memory. Both numbers must be positive integers",
-                                "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-
-            }
-
-
+            throw new NotImplementedException();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -331,15 +287,15 @@ namespace armsim
             updateFlagsPanel();
 
             // update memory panel
-        //    uint startMemoryAddress = computer.getProgramCounter();
-        //    updateMemoryPanel(startMemoryAddress);
+            uint startMemoryAddress = computer.getProgramCounter();
+            updateMemoryPanel(startMemoryAddress);
 
             // update stack
             updateStackPanel();
 
             // update disassembly
-        //    string str = computer.getDisassembledLastInstructionExecuted();
-        //    disTextBox.Text += str;
+            string str = computer.getDisassembledLastInstructionExecuted();
+            disTextBox.Text += str;
             
 
         }
@@ -366,8 +322,8 @@ namespace armsim
             updateFlagsPanel();
 
             // update memory panel
-        //    uint startMemoryAddress = computer.getProgramCounter();
-        //    updateMemoryPanel(startMemoryAddress);
+            uint startMemoryAddress = computer.getProgramCounter();
+            updateMemoryPanel(startMemoryAddress);
 
             // update stack
             updateStackPanel();
@@ -384,12 +340,12 @@ namespace armsim
             uint instruction = 0;
 
             // add rows to the stack panel
-        //    for (uint i = 0; i <= numRows; i++)
-        //    {
-        //        instruction = computer.getStackInstruction(address);
-        //        stackDataGridView.Rows.Add("0x" + address.ToString("X").PadLeft(8, '0'), instruction.ToString("X").PadLeft(8, '0'));
-        //        address += 4;
-        //    }
+            for (uint i = 0; i <= numRows; i++)
+            {
+                instruction = computer.getStackInstruction(address);
+                stackDataGridView.Rows.Add("0x" + address.ToString("X").PadLeft(8, '0'), instruction.ToString("X").PadLeft(8, '0'));
+                address += 4;
+            }
         }
 
         /// FUNCTION: - Add the number of rows requested to memory panel starting at <startAddress>
@@ -420,16 +376,16 @@ namespace armsim
             // TODO: catch excess of rows requested when the RAM doesn't have a lot of memory to display that fits in the all the requested rows
             for (int i = 0; i < this.memoryPanelNoRowsToShow; i++)
             {
-            //    fourWordsFromMemory = computer.getFourWordsFromMemory(startAddress);
+                fourWordsFromMemory = computer.getFourWordsFromMemory(startAddress);
 
                 // TODO: for now if out of range in memory address, print 0. Add a handler for out of bound memory address later.
                 // add one row in GridViewin order: address, hex1, hex2, hex3, h4, contents
                 //string currentHexAddress = "0x" + startAddress.ToString("X").PadLeft(8, '0');
-            //    this.memoryDataGridView.Rows.Add(          "0x" + startAddress.ToString("X").PadLeft(8, '0')         , 
-            //                                            fourWordsFromMemory[0].ToString("x").PadLeft(8, '0')         ,
-            //                                            fourWordsFromMemory[1].ToString("x").PadLeft(8, '0')         ,
-            //                                            fourWordsFromMemory[2].ToString("x").PadLeft(8, '0')         ,
-            //                                            fourWordsFromMemory[3].ToString("x").PadLeft(8, '0'));
+                this.memoryDataGridView.Rows.Add(          "0x" + startAddress.ToString("X").PadLeft(8, '0')         , 
+                                                        fourWordsFromMemory[0].ToString("x").PadLeft(8, '0')         ,
+                                                        fourWordsFromMemory[1].ToString("x").PadLeft(8, '0')         ,
+                                                        fourWordsFromMemory[2].ToString("x").PadLeft(8, '0')         ,
+                                                        fourWordsFromMemory[3].ToString("x").PadLeft(8, '0'));
 
                 //increment startAddress to get the next four words from registers
                 startAddress += oneMemRowInBytes;
@@ -444,37 +400,37 @@ namespace armsim
         private void updateFlagsPanel()
         {
             //clear all flag rows
-        //    this.flagsDataGridView.Rows.Clear();
+            this.flagsDataGridView.Rows.Clear();
 
             // get flag names and values
-        //    string[] flagNamesArray = computer.getControlFlagNames(); // get flags in this order: N, Z, C, V 
-        //    uint[] flagsIntArray = computer.getControlFlagsIntArray(); // get flags in this order: N, Z, C, V 
+            string[] flagNamesArray = computer.getControlFlagNames(); // get flags in this order: N, Z, C, V 
+            uint[] flagsIntArray = computer.getControlFlagsIntArray(); // get flags in this order: N, Z, C, V 
 
             // add all flags to panel
-        //    for (int i = 0; i < flagNamesArray.Length; i++)
-        //        this.flagsDataGridView.Rows.Add(flagNamesArray[i], flagsIntArray[i]);
+            for (int i = 0; i < flagNamesArray.Length; i++)
+                this.flagsDataGridView.Rows.Add(flagNamesArray[i], flagsIntArray[i]);
 
         }
 
         private void updateRegistersPanel()
         {
             // clear all register rows
-        //    this.registersDataGridView.Rows.Clear();
+            this.registersDataGridView.Rows.Clear();
 
             // get registers names values and 
-        //    string[] registerNameArray = computer.getRegisterNames();
-        //    uint[] registersIntArray = computer.getRegistersIntArray();
+            string[] registerNameArray = computer.getRegisterNames();
+            uint[] registersIntArray = computer.getRegistersIntArray();
 
             // add all registers to panel
-        //    int regCount = registersIntArray.Length;
-        //    for (int i = 0; i < regCount; i++)
-        //        this.registersDataGridView.Rows.Add(registerNameArray[i], registersIntArray[i].ToString("X").PadLeft(8, '0')); 
+            int regCount = registersIntArray.Length;
+            for (int i = 0; i < regCount; i++)
+                this.registersDataGridView.Rows.Add(registerNameArray[i], registersIntArray[i].ToString("X").PadLeft(8, '0')); 
         }
 
         private void updateDissaemblyPanel()
         {
-            //string disStr = computer.getCPUDisassembledCombinedString();
-            //disTextBox.Text = disStr;
+            string disStr = computer.getCPUDisassembledCombinedString();
+            disTextBox.Text = disStr;
         }
 
         #endregion
