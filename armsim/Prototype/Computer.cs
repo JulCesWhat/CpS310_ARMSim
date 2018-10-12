@@ -284,7 +284,11 @@ namespace armsim.Prototype
         internal uint[] getFourWordsFromMemory(uint startAddress) { return memory.getFourWordsFromMemory(startAddress); }
         internal string[] getControlFlagNames() { return registers.getControlFlagNames(); }
 
-
+        /* CPU list methods */
+        internal List<string> getCPUInstructionList() { return cpu.getInstructionList(); }
+        internal List<string> getCPUInstructionAddressList() { return cpu.getInstructionAddressList(); }
+        internal List<string> getCPUInstructionDisassembledList() { return cpu.getInstructionDisassembledList(); }
+        internal void clearCPUInstructionAddressDisassembledLists() { cpu.clearInstAddrDisLists(); }
 
 
 
@@ -293,15 +297,42 @@ namespace armsim.Prototype
             return memory.ReadWord(address);
         }
 
+        // Getter functions to get items in CPU lists: instruction address, instruction, disassembled
+        internal int getCPUDisListCount()
+        {
+            return cpu.getCPUDisListCount();
+        }
+
+        internal string getCPUInstructionAddressItem_At(int itemNumber)
+        {
+            return cpu.getCPUInstructionAddressItem_At(itemNumber);
+        }
+
+        internal string getCPUInstructionItem_At(int itemNumber)
+        {
+            return cpu.getCPUInstructionItem_At(itemNumber);
+        }
+
+        internal string getCPUInstructionDisassembledItem_At(int itemNumber)
+        {
+            return cpu.getCPUInstructionDisassembledItem_At(itemNumber);
+        }
+
         internal string getCPUDisassembledCombinedString()
         {
             return cpu.getCPUDisassembledCombinedString();
+        }
+
+        internal void clearCPUDisassembledCombinedString()
+        {
+            cpu.clearCPUDisassembledCombinedString();
         }
 
         internal string getDisassembledLastInstructionExecuted()
         {
             return cpu.getDisassembledLastInstructionExecuted();
         }
+
         #endregion
     }
 }

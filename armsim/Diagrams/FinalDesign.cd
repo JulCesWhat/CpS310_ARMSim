@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="armsim.Simulator_I.LoadAndStoreMul" Collapsed="true">
+    <Position X="7.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulator I\LoadAndStoreMul.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="armsim.Simulator_I.Immediate" Collapsed="true">
+    <Position X="6.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEEQAAQEAAAQAAAAEAAAAAAAAAAIAQAECQAAAAIAAAA=</HashCode>
+      <FileName>Simulator I\SecOperand.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DataProcessing" />
+      <Property Name="LoadAndStore" />
+      <Property Name="LoadAndStoreMul" />
+      <Property Name="Mul" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="armsim.Simulator_I.Mul" Collapsed="true">
+    <Position X="7.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulator I\Mul.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="armsim.Simulator_I.LoadAndStore" Collapsed="true">
+    <Position X="7.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Simulator I\LoadAndStore.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="armsim.Simulator_I.Instruction">
+    <Position X="9.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Simulator I\Instruction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="armsim.Simulator_I.DataProcessing">
+    <Position X="11" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAFAEABAQAIAAAFAAAAAAACAAAQAAACQAAAAKBBBA=</HashCode>
+      <FileName>Simulator I\DataProcessing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="armsim.Prototype.Computer" Collapsed="true">
+    <Position X="3" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMAAAgFAgAAwAEEgBAICACCBBgAoQgAEE4EAGIIAACA=</HashCode>
+      <FileName>Prototype\Computer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="armsim.Prototype.CPU" Collapsed="true">
+    <Position X="3" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQDABAgAAAAAAEEAAAAEBAABBiAAAhBAEYAABIKAjAA=</HashCode>
+      <FileName>Prototype\CPU.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Computer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="armsim.Prototype.Memory" Collapsed="true">
+    <Position X="5.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAgCAEAgAABAAAAAAIAUACggAAAANAgAAAAEAAACAA=</HashCode>
+      <FileName>Prototype\Memory.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Computer" />
+      <Property Name="CPU1" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="armsim.Prototype.Registers" Collapsed="true">
+    <Position X="5.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IEABkgEAhEFABAAAAAAAACCAQCDDwARMIgFAkJAQECE=</HashCode>
+      <FileName>Prototype\Registers.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CPU" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

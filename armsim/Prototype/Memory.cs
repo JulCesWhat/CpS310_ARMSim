@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace armsim.Prototype
 {
-    public class Memory: Observer
+    public class Memory : Observer
     {
         private Subject subject;
         uint RAMSize;
@@ -40,23 +40,6 @@ namespace armsim.Prototype
             this.subject = _subject;
             this.RAMSize = _RAMsize;
         }
-
-        public Observer Observer
-        {
-            get => default(Observer);
-            set
-            {
-            }
-        }
-
-        internal CPU CPU
-        {
-            get => default(CPU);
-            set
-            {
-            }
-        }
-
 
         #region Observer Functions
 
@@ -168,6 +151,12 @@ namespace armsim.Prototype
 
         public byte ReadByte(uint address)
         {
+            if (address == 0x00100001)
+            {
+                //ArmSimForm.WriteCharToTerminal("Hello World!");
+                return 0;
+            }
+
             return RAM[address];
         }
 
@@ -194,6 +183,30 @@ namespace armsim.Prototype
             }
 
             return cksum;
+        }
+
+        // print binary representaion of number <n>
+        // helper test function for SetFlag()
+        public string GetIntBinaryString(int n)
+        {
+            char[] b = new char[32];
+            int pos = 31;
+            int i = 0;
+
+            while (i < 32)
+            {
+                if ((n & (1 << i)) != 0)
+                {
+                    b[pos] = '1';
+                }
+                else
+                {
+                    b[pos] = '0';
+                }
+                pos--;
+                i++;
+            }
+            return new string(b);
         }
 
         //TODO: I need to implement this part
@@ -246,7 +259,7 @@ namespace armsim.Prototype
 
                 uint numWFlagChanged = (uint)chFlagVal;
                 WriteWord(address, numWFlagChanged);
-                
+
                 return 0;
             }
             else // (flagIsSet == false)
@@ -261,7 +274,7 @@ namespace armsim.Prototype
 
                 uint numWFlagChanged = (uint)chFlagVal;
                 WriteWord(address, numWFlagChanged);
-                
+
                 return 0;
             }
         }

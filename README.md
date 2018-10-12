@@ -1,8 +1,8 @@
 # Header info:
-Julio Cesar Whatley, CpS310, 9/8/2018, 24 1/2 hrs
+Julio Cesar Whatley, CpS310, 9/26/2018, 22 hrs
 
 #Overview:
-This application reads an ELF file and loads it to ram and then does a checksum to see if it loaded it correctly
+The application loads a arm programs and displays it on the GUI.
 
 #Prerequisites:
 OS: Windows 10, IDE: Visual Studio 2017
@@ -18,7 +18,7 @@ Automatic tracing and logging.
 Start the project and run it with desired flags.
 
 #Bug Report:
-No logs flag options enabled
+Adding break points is not totally working.
 
 #[Project Journa](https://bju-my.sharepoint.com/:w:/g/personal/jwhat331_students_bju_edu/EZOxQ8qZh1hNiOe8rCuwmjkBze4aQgyK0vMvWE2qtDUV1g?e=kDB75s):
 

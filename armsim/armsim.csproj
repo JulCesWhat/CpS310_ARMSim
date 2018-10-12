@@ -78,7 +78,15 @@
     <Compile Include="Prototype\CPU.cs" />
     <Compile Include="Prototype\Memory.cs" />
     <Compile Include="Prototype\Registers.cs" />
+    <Compile Include="Simulator I\BarrelShifter.cs" />
+    <Compile Include="Simulator I\DataProcessing.cs" />
+    <Compile Include="Simulator I\Instruction.cs" />
+    <Compile Include="Simulator I\LoadAndStore.cs" />
+    <Compile Include="Simulator I\LoadAndStoreMul.cs" />
+    <Compile Include="Simulator I\Mul.cs" />
+    <Compile Include="Simulator I\SecOperand.cs" />
     <Compile Include="Unit Tests\TestCPU.cs" />
+    <Compile Include="Unit Tests\TestDecodeExecuteSimI.cs" />
     <Compile Include="Unit Tests\TestMemory.cs" />
     <Compile Include="Unit Tests\TestRegisters.cs" />
   </ItemGroup>
@@ -86,6 +94,7 @@
     <None Include="App.config" />
     <None Include="Diagrams\DraftDesign.cd" />
     <None Include="Diagrams\DraftDesign.dgml" />
+    <None Include="Diagrams\FinalDesign.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -105,5 +114,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

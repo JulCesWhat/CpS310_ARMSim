@@ -11,33 +11,23 @@
   <Class Name="armsim.Program" Collapsed="true">
     <Position X="8.5" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ArmSimForm" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="armsim.Extra_Classes.TraceLog" Collapsed="true">
     <Position X="7.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAABQAAAgAAAYEAACAAIQABBAAAAgAAAIgAAAAAAAA=</HashCode>
+      <HashCode>AAAABAAAAgAAAYEAACAAAQABBAAAAgAAAIgAAAAAAAA=</HashCode>
       <FileName>Extra Classes\Logs.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Program1" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="armsim.Extra_Classes.DebugLog" Collapsed="true">
     <Position X="3" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAQAAAAAAAAAAAAAAIQAAAAAAAAAAAIgACAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAIgACAAAAAA=</HashCode>
       <FileName>Extra Classes\Logs.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Program" />
-      <Property Name="Program1" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="armsim.Extra_Classes.Subject" Collapsed="true">
     <Position X="3" Y="2.5" Width="1.5" />
@@ -62,19 +52,15 @@
   <Class Name="armsim.Prototype.Computer" BaseTypeListCollapsed="true">
     <Position X="10" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAAwFAgAAwAAAgBAACAACAAAAoQAAAAYEAGAIACAA=</HashCode>
+      <HashCode>AMAAAgFAgAAwAEEgBAICACCBBgAoQgAEE4EAGIIAACA=</HashCode>
       <FileName>Prototype\Computer.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Observer" />
-      <Property Name="Program" />
-    </ShowAsAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="armsim.Prototype.CPU">
     <Position X="12.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AADABAgAAAAAAAAAAAAEAACBAAAAAABAAYAAAAKADAA=</HashCode>
+      <HashCode>AQDABAgAAAAAAEEAAAAEBAABBiAAAgBAEYAABIKAjAA=</HashCode>
       <FileName>Prototype\CPU.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -93,13 +79,9 @@
   <Class Name="armsim.Prototype.Registers" Collapsed="true">
     <Position X="7.5" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IEABkgEAhEFABAAAAAAAACCAQCDDwARMIgFAkJAQGCE=</HashCode>
+      <HashCode>IEABkgEAhEFABAAAAAAAACCAQCDDwARMIgFAkJAQECE=</HashCode>
       <FileName>Prototype\Registers.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Observer" />
-      <Property Name="CPU" />
-    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="armsim.Unit_Tests.TestMemory" Collapsed="true">
