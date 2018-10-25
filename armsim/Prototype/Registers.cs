@@ -86,14 +86,6 @@ namespace armsim.Prototype
 
         }
 
-        internal CPU CPU
-        {
-            get => default(CPU);
-            set
-            {
-            }
-        }
-
         #region Observer Functions
 
         // FUNCTION OVERRIDE IN OBSERVER: Empty method. This method is needed for observer pattern

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics; // for Trace() and Debug()
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace armsim.Prototype
 {
@@ -61,6 +62,10 @@ namespace armsim.Prototype
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
             this.run();
+            this.traceLogFlush();
+            this.traceLogClose();
+            Thread.Sleep(5000);
+            Environment.Exit(0);
         }
 
         ///  FUNTION: - Called by GUI to stop thread or called at the end of the program
@@ -128,6 +133,7 @@ namespace armsim.Prototype
 
             // Cancel Thread to update panels if it's not canceled yet.
             worker.CancelAsync();
+
 
             return 0;
         }
@@ -290,7 +296,11 @@ namespace armsim.Prototype
         internal List<string> getCPUInstructionDisassembledList() { return cpu.getInstructionDisassembledList(); }
         internal void clearCPUInstructionAddressDisassembledLists() { cpu.clearInstAddrDisLists(); }
 
-
+        //internal void TestArmSimFormRef_OnWriteCharToTerminal()
+        //{
+        //    //ArmSimFormRef.WriteCharToTerminal("Hello World!");
+        //    memory.ReadByte(0x00100001);
+        //}
 
         internal uint getStackInstruction(uint address)
         {

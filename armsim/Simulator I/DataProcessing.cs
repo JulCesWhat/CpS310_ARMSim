@@ -97,9 +97,11 @@ namespace armsim.Simulator_I
                 case 9: // TEQ
                     this.TEQ();
                     break;
+                */
                 case 10: // CMP
                     this.CMP();
                     break;
+                /*
                 case 11: // CMN
                     this.CMN();
                     break;
@@ -651,6 +653,128 @@ namespace armsim.Simulator_I
             if (bit25 == false && bit4 == true)  
                 registers.updateRegisterN(Rd, immediate.getRotatedImmediate());
              */
+        }
+
+        /// FUNCTION: 
+        ///       - CMP (Compare) compares two values. The first value comes from a register. The second value can be either
+        ///         an immediate value or a value from a register, and can be shifted before the comparison.
+        ///       - CMP updates the condition flags, based on the result of subtracting the second value from the first.
+        /// SYNTAX: CMP{<cond>} <Rn>, <shifter_operand>
+        /// USES FIELDS: Rn, operand2
+        private void CMP()
+        {
+            ///  Four condition flags:
+            ///  N = bit 31 of the result of the arithmetic operation (sign bit)
+            ///  	 1 if result is negative
+            ///  	 0 if result is positive
+            ///  Z = 1 if the result is 0, 0 if the result is non zero
+            ///  C = Carry flag
+            ///  V = Overflow flag
+
+            // Rn and shifter operands to check CMP
+            uint cmpVal_uint = 0; // flags are set accoding to this result
+            int cmpVal_int = 0;
+
+            uint RnVal_uint = 0;
+            uint shifter_operand_uint = 0;
+
+            int RnVal_int = 0;
+            int shifter_operand_int = 0;
+
+            //========================= ===Set locals to later set flags ==================================//
+            // Immediate
+            if (bit25 == true)
+            {
+                // set all locals to check flags
+                RnVal_uint = RnRegVal;
+                shifter_operand_uint = immediate.getRotatedImmediate();
+
+                RnVal_int = (int)RnRegVal;
+                shifter_operand_int = (int)immediate.getRotatedImmediate();
+
+                cmpVal_uint = RnVal_uint - shifter_operand_uint;
+                cmpVal_int = RnVal_int - shifter_operand_int;
+
+                // update disassembly string
+                instructionString += " " + registers.getRegisterName(Rn) + ", " + immediate.getImmString();
+            }
+
+
+            // Register and Immediate Shifted Register
+            if (bit25 == false && bit4 == false)
+            {
+                // do shift on reg (told by Rm) by shiftNum
+                reg_and_imm_sh_reg.execute_RegAndImmShReg();
+
+                // set all locals to check flags
+                RnVal_uint = RnRegVal;
+                shifter_operand_uint = reg_and_imm_sh_reg.getRmRegVal();
+
+                RnVal_int = (int)RnRegVal;
+                shifter_operand_int = (int)reg_and_imm_sh_reg.getRmRegVal();
+
+                cmpVal_uint = RnVal_uint - shifter_operand_uint;
+                cmpVal_int = RnVal_int - shifter_operand_int;
+
+                // update disassembly string
+                string op2String = reg_and_imm_sh_reg.getOp2String();
+                instructionString += " " + registers.getRegisterName(Rn) + ", " + op2String;
+            }
+
+
+            // Register Shifted Register
+            /* TODO: not implemented for simI
+            if (bit25 == false && bit4 == true)  
+                registers.updateRegisterN(Rd, immediate.getRotatedImmediate());
+             */
+
+            //========================= ======  set flags ==================================//
+            // set N flag
+            uint bit_31 = (cmpVal_uint >> 31) & 0xffffffff;
+            registers.setNFlag(bit_31);
+
+            // set Z flag
+            if (cmpVal_uint == 0)
+                registers.setZFlag(1);
+            else
+                registers.setZFlag(0);
+
+            ///  Computing C
+            ///  Interpret <Rn> and <shifter_operand> value as unsigned quantities
+            ///  In an unsigned subtraction, if <shifter_operand> is greater than <Rn>, the result would
+            ///  underflow and become negative, requiring a “borrow.” C = 0 in this case.
+            ///  If <shifter_operand> is less than or equal to <Rn>, the result would be positive or 0. C =
+            ///  1 in this case.
+
+            //  set C flag
+            if (shifter_operand_uint > RnVal_uint)
+                registers.setCFlag(0);
+            else
+                registers.setCFlag(1);
+
+            ///  Computing V
+            ///  Interpret <Rn> and <shifter_operand> value as signed quantities
+            ///  Overflow occurs in the following two cases:
+            ///  Case #1: <Rn> is positive, <shifter_operand> is negative, and the result is
+            ///           negative
+            ///  Case #2: <Rn> is negative, <shifter_operand> is positive, and the result is
+            ///           positive
+
+            // set V flag
+            if ((RnVal_int >= 0) &&
+                    (shifter_operand_int < 0) &&
+                        (cmpVal_int < 0))    // Case #1
+                registers.setVFlag(1);
+
+            else if ((RnVal_int < 0) &&
+                      (shifter_operand_int >= 0) &&
+                        (cmpVal_int >= 0))   // case #2
+                registers.setVFlag(1);
+
+            else // no overflow
+                registers.setVFlag(0);
+
+            return;
         }
 
         #endregion

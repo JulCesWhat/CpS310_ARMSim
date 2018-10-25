@@ -29,6 +29,18 @@ namespace armsim.Simulator_I
 
         }
 
+        // Check the instruction given and return whether it is a BX instruction or not
+        public static bool isBX(uint inst)
+        {
+            uint bits_27_20 = (inst >> 20) & 0xff;
+            uint bits_7_4 = (inst >> 4) & 0xf;
+
+            if ((bits_27_20 == 18) && (bits_7_4 == 1)) // this situation: cond 0 0 0 1 0 0 1 0 SBO SBO SBO 0 0 0 1 Rm
+                return true;
+
+            return false;
+        }
+
         // RECEIVES: an uint instruction
         // RETURSNS: the type of the instruction bits 27...25
         public static uint getNormalInstructionType(uint inst)

@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using armsim.Extra_Classes;
 using armsim.Prototype;
+using armsim.Simulator_II;
 
 // explicit namepace because form.Dispose() won't work without it
 namespace armsim 
@@ -31,7 +32,10 @@ namespace armsim
 
             // tie reference to subject and add observer to list
             this.subject = _subject;
-            subject.registerObserver(this);     
+            subject.registerObserver(this);
+
+            // Add event handler to write a charatecter to terminal when CPU a byte in Memory from address 0x00100001
+            ArmSimFormRef.OnWriteCharToTerminal += ArmSimFormRef_OnWriteCharToTerminal;
 
             // set object reference to computer
             this.computer = _computer;
@@ -147,7 +151,17 @@ namespace armsim
                 computer.turnOffTraceLog();
                 computer.turnOnTraceLog();
                 toggleTraceOnoffToolStripMenuItem.Text = "Turn OFF trace log";
-                
+
+                // clear cpu list for dissembly panel
+                computer.clearCPUInstructionAddressDisassembledLists();
+
+                // clear disassembled instruction string in CPU
+                computer.clearCPUDisassembledCombinedString();
+
+                // clear terminal text and queue
+                terminlaTextBox.Clear();
+                charsQueue.Clear();
+
                 // enable menu item availability
                 updatePanelsAndResetMenuItems();
                 resetToolStripMenuItem.Enabled = true;
@@ -366,11 +380,11 @@ namespace armsim
                 // TODO: for now if out of range in memory address, print 0. Add a handler for out of bound memory address later.
                 // add one row in GridViewin order: address, hex1, hex2, hex3, h4, contents
                 //string currentHexAddress = "0x" + startAddress.ToString("X").PadLeft(8, '0');
-                this.memoryDataGridView.Rows.Add(          "0x" + startAddress.ToString("X").PadLeft(8, '0')         , 
-                                                        fourWordsFromMemory[0].ToString("x").PadLeft(8, '0')         ,
-                                                        fourWordsFromMemory[1].ToString("x").PadLeft(8, '0')         ,
-                                                        fourWordsFromMemory[2].ToString("x").PadLeft(8, '0')         ,
-                                                        fourWordsFromMemory[3].ToString("x").PadLeft(8, '0'));
+                this.memoryDataGridView.Rows.Add("0x" + startAddress.ToString("X").PadLeft(8, '0')         , 
+                                                fourWordsFromMemory[0].ToString("x").PadLeft(8, '0')         ,
+                                                fourWordsFromMemory[1].ToString("x").PadLeft(8, '0')         ,
+                                                fourWordsFromMemory[2].ToString("x").PadLeft(8, '0')         ,
+                                                fourWordsFromMemory[3].ToString("x").PadLeft(8, '0'));
 
                 //increment startAddress to get the next four words from registers
                 startAddress += oneMemRowInBytes;
@@ -487,7 +501,7 @@ namespace armsim
             if (charsQueue.Count > 0)
             {
                 chr = (string)charsQueue.Dequeue();
-                terminlaTextBox.AppendText( chr);
+                terminlaTextBox.AppendText(chr);
             }
             else
             {

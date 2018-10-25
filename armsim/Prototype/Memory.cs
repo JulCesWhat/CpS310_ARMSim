@@ -1,4 +1,6 @@
 ﻿using armsim.Extra_Classes;
+using armsim.Simulator_I;
+using armsim.Simulator_II;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,10 +72,10 @@ namespace armsim.Prototype
         public uint ReadWord(uint address)
         {
             if (!(address % 4 == 0)) // address not divisible by 4
-                return uint.MaxValue;
+                return uint.MinValue;
 
             if (RAMSize <= address)  // address is greater than the RAM size
-                return uint.MaxValue;
+                return uint.MinValue;
 
             byte[] bytes = { RAM[address], RAM[address + 1], RAM[address + 2], RAM[address + 3] }; // collect bytes from RAM into buffer
 
@@ -153,7 +155,7 @@ namespace armsim.Prototype
         {
             if (address == 0x00100001)
             {
-                //ArmSimForm.WriteCharToTerminal("Hello World!");
+                ArmSimFormRef.WriteCharToTerminal("Hello World!");
                 return 0;
             }
 
@@ -220,8 +222,14 @@ namespace armsim.Prototype
                 return false;
             }
 
-            //Need to do more work here
-            return false;
+            uint num1 = ReadWord(address);
+            num1 = BarrelShifter.lsl(num1, 31 - bit);
+            num1 = BarrelShifter.lsr(num1, 31);
+
+            if (num1 == 1)
+                return true;
+            else
+                return false;
         }
 
 

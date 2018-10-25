@@ -1,5 +1,6 @@
 ﻿using armsim.Extra_Classes;
 using armsim.Simulator_I;
+using armsim.Simulator_II;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,7 +22,10 @@ namespace armsim.Prototype
         // an instruction
         DataProcessing data_processing_instruct;
         LoadAndStore load_store_instruct;
+        LoadAndStoreMul load_store_mul_instruct;
+        Branch branch_instruct;
         Mul mul_instruct;
+        Bx bx_instruct;
 
         Memory memory;
         Registers registers;
@@ -51,6 +55,7 @@ namespace armsim.Prototype
             // initialize instruction types to null
             this.data_processing_instruct = null;
             this.load_store_instruct = null;
+            this.branch_instruct = null;
             this.mul_instruct = null;
 
             // initialize tracelog
@@ -88,6 +93,14 @@ namespace armsim.Prototype
                 return;
             }
 
+            // BX CASE
+            if (Extras.isBX(currentInstruction))
+            {
+                bx_instruct = new Bx(memory, registers, currentInstruction, currentInstAddress);
+                bx_instruct.decodeBx();
+                return;
+            }
+
             /*************************** NORMAL CASES ******************************/
             // get instruction type
             currentInstructionType = Extras.getNormalInstructionType(currentInstruction);
@@ -109,12 +122,13 @@ namespace armsim.Prototype
                     break;
 
                 case 4: // if Load/Store (100) Load/Store Multiple FD variant
-                    throw new NotImplementedException();
+                    load_store_mul_instruct = new LoadAndStoreMul(memory, registers, currentInstruction, currentInstAddress);
+                    load_store_mul_instruct.decodeLaSMul();
                     break;
 
                 case 5: // if Branch (101)
-
-                    throw new NotImplementedException();
+                    branch_instruct = new Branch(memory, registers, currentInstruction, currentInstAddress);
+                    branch_instruct.decodeB();
                     break;
 
                 default:
@@ -131,8 +145,11 @@ namespace armsim.Prototype
             // add address, instruction, and disassembled instruction strings to each list
             string addr = "0x" + currentInstAddress.ToString("X").PadLeft(8, '0');
             string inst = currentInstruction.ToString("x").PadLeft(8, '0');
-            //instAddressLst.Add(addr);
-            //instLst.Add(inst);
+
+            #region For testing purposes
+            instAddressLst.Add(addr);
+            instLst.Add(inst);
+            #endregion
 
             // prepare string
             disassembledCombinedString = disassembledCombinedString + "\r\n" + addr + "\t" + inst + "\t";
@@ -144,8 +161,10 @@ namespace armsim.Prototype
             // INJECT A NOP into execute if instruction is a NOP
             if (Extras.isNOPInstruction(currentInstruction, registers.getNFlag(), registers.getZFlag(), registers.getCFlag(), registers.getVFlag()))
             {
-                writeInfoToTraceLog();
-                //instDisLst.Add("NOP");
+                writeInfoToTraceLogForSimI();
+                #region For testing purposes
+                    instDisLst.Add("NOP");
+                #endregion
                 disassembledCombinedString += "NOP";
                 lastDisString += "NOP";
                 return false;
@@ -160,11 +179,15 @@ namespace armsim.Prototype
 
                 // add swi immediate to disassembled list
                 tempStr = "svc 0x" + swi_imm.ToString("x").PadLeft(8, '0');
-                //instDisLst.Add(tempStr);
+
+                #region For testing purposes
+                instDisLst.Add(tempStr);
+                #endregion
+
                 disassembledCombinedString += tempStr;
                 lastDisString += tempStr;
 
-                writeInfoToTraceLog();
+                writeInfoToTraceLogForSimI();
                 return true; // true to stop executing more instructions
             }
 
@@ -174,11 +197,33 @@ namespace armsim.Prototype
                 mul_instruct.executeMul();
 
                 tempStr = mul_instruct.getInstructionString();
-                //instDisLst.Add(tempStr);
+
+                #region For testing purposes
+                instDisLst.Add(tempStr);
+                #endregion
+
                 disassembledCombinedString += tempStr;
                 lastDisString += tempStr;
 
-                writeInfoToTraceLog();
+                writeInfoToTraceLogForSimI();
+                return false; // false to keep excuting more instructions
+            }
+
+            // BX CASE
+            if (Extras.isBX(currentInstruction))
+            {
+                bx_instruct.executeBx();
+
+                tempStr = bx_instruct.getInstructionString();
+
+                #region For testing purposes
+                instDisLst.Add(tempStr);
+                #endregion
+
+                disassembledCombinedString += tempStr;
+                lastDisString += tempStr;
+
+                writeInfoToTraceLogForSimI();
                 return false; // false to keep excuting more instructions
             }
 
@@ -192,7 +237,11 @@ namespace armsim.Prototype
                     data_processing_instruct.executeDP();
 
                     tempStr = data_processing_instruct.getInstructionString();
-                    //instDisLst.Add(tempStr);
+
+                    #region For testing purposes
+                    instDisLst.Add(tempStr);
+                    #endregion
+
                     disassembledCombinedString += tempStr;
                     lastDisString += tempStr;
                     break;
@@ -202,17 +251,39 @@ namespace armsim.Prototype
                     load_store_instruct.executeLaS();
 
                     tempStr = load_store_instruct.getInstructionString();
-                    //instDisLst.Add(tempStr);
+
+                    #region For testing purposes
+                    instDisLst.Add(tempStr);
+                    #endregion
+
                     disassembledCombinedString += tempStr;
                     lastDisString += tempStr;
                     break;
 
                 case 4: // if Load/Store (100) Load/Store Multiple FD variant
-                    throw new NotImplementedException();
+                    load_store_mul_instruct.executeLaSMul();
+
+                    tempStr = load_store_mul_instruct.getInstructionString();
+                    
+                    #region For testing purposes
+                    instDisLst.Add(tempStr);
+                    #endregion
+
+                    disassembledCombinedString += tempStr;
+                    lastDisString += tempStr;
                     break;
 
                 case 5: // if Branch (101)
-                    throw new NotImplementedException();
+                    branch_instruct.executeB();
+
+                    tempStr = branch_instruct.getInstructionString();
+
+                    #region For testing purposes
+                    instDisLst.Add(tempStr);
+                    #endregion
+
+                    disassembledCombinedString += tempStr;
+                    lastDisString += tempStr;
                     break;
 
                 // TODO: Check special cases
@@ -220,12 +291,11 @@ namespace armsim.Prototype
                     Debug.WriteLine("ERROR in CPU.execute(): Type is Special or Non-valid instruction.");
                     break;
             } // end switch
-            
-            writeInfoToTraceLog();
+
+            writeInfoToTraceLogForSimI();
 
             //Thread.Sleep(5000);
-
-            //For right now it never ends
+            
             return false;
         }
 
@@ -286,60 +356,16 @@ namespace armsim.Prototype
         /// 000001 41414141 d41d8cd98f00b204e9800998ecf8427e 0101 0=01234567 1=01234567 2=01234567 3=01234567
         /// 4=01234567  5=01234567  6=01234567  7=01234567  8=01234567 9=01234567
         /// 10=01234567 11=01234567 12=01234567 13=01234567 14=01234567
-        /// Tracelog for SIM II
-        private void writeInfoToTraceLog()
-        {
-            if (traceLog.isEnabled() == false)
-                return;
-
-            // getting the needed values
-            int traceCounter = traceLog.getTraceCounter();
-            uint programCounter = currentInstAddress; // program_counter is the value of the program counter at the time the fetch began
-
-            string machine_state = "[sys]";
-
-            uint[] controlFlagsIntArray = registers.getControlFlagsIntArray();
-            uint[] registersIntArray = registers.getRegistersIntArray();
-
-            // converting values to string formatted to print them later
-            string strTC = traceCounter.ToString().PadLeft(6, '0');
-            string strPC = programCounter.ToString("X").PadLeft(8, '0');  // gives you hex
-
-            // printing values to trace log by lines
-            traceLog.WriteLineToLog(strTC + " " + strPC + " " + machine_state + " " +
-                                    controlFlagsIntArray[0] + controlFlagsIntArray[1] + controlFlagsIntArray[2] + controlFlagsIntArray[3] +
-
-                                     " 0=" + registersIntArray[0].ToString("X").PadLeft(8, '0') +
-                                     " 1=" + registersIntArray[1].ToString("X").PadLeft(8, '0') +
-                                     " 2=" + registersIntArray[2].ToString("X").PadLeft(8, '0') +
-                                     " 3=" + registersIntArray[3].ToString("X").PadLeft(8, '0'));
-
-            traceLog.WriteLineToLog(
-                                    "\t4=" + registersIntArray[4].ToString("X").PadLeft(8, '0') +
-                                    "  " + "5=" + registersIntArray[5].ToString("X").PadLeft(8, '0') +
-                                    "  " + "6=" + registersIntArray[6].ToString("X").PadLeft(8, '0') +
-                                    "  " + "7=" + registersIntArray[7].ToString("X").PadLeft(8, '0') +
-                                    "  " + "8=" + registersIntArray[8].ToString("X").PadLeft(8, '0') +
-                                    " " + "9=" + registersIntArray[9].ToString("X").PadLeft(8, '0'));
-
-            traceLog.WriteLineToLog(
-                                     "\t10=" + registersIntArray[10].ToString("X").PadLeft(8, '0') +
-                                     " 11=" + registersIntArray[11].ToString("X").PadLeft(8, '0') +
-                                     " 12=" + registersIntArray[12].ToString("X").PadLeft(8, '0') +
-                                     " 13=" + registersIntArray[13].ToString("X").PadLeft(8, '0') +
-                                     " 14=" + registersIntArray[14].ToString("X").PadLeft(8, '0'));
-
-            traceLog.updateStepCounterByOne();
-        }
-
         // Trace Log for SIM I
         private void writeInfoToTraceLogForSimI()
         {
             // getting the needed values
             int traceCounter = traceLog.getTraceCounter();
-            uint programCounter = registers.getProgramCounter() - 4; // program_counter is the value of the program counter at the time the fetch began
+            uint programCounter = currentInstAddress; // program_counter is the value of the program counter at the time the fetch began
 
-            string checksum = "Need to do something here"; //memory.ComputeRAMChecksum(null);
+            Debug.WriteLine(traceCounter);
+
+            uint checksum = memory.ComputeRAMChecksum(null);
 
             uint[] controlFlagsIntArray = registers.getControlFlagsIntArray();
             uint[] registersIntArray = registers.getRegistersIntArray();
@@ -349,28 +375,26 @@ namespace armsim.Prototype
             string strPC = programCounter.ToString("X").PadLeft(8, '0');  // gives you hex
 
             // printing values to trace log by lines
-            traceLog.WriteLineToLog(strTC + " " + strPC + " " + checksum + " " +
-                                    controlFlagsIntArray[0] + controlFlagsIntArray[1] + controlFlagsIntArray[2] + controlFlagsIntArray[3] +
+            traceLog.WriteLineToLog(strTC + " " + strPC + " " + checksum.ToString("X").PadLeft(8, '0') + " " +
+                                    controlFlagsIntArray[0] + controlFlagsIntArray[1] +
+                                    controlFlagsIntArray[2] + controlFlagsIntArray[3] + " SYS" +
 
-                                    "   0=" + registersIntArray[0].ToString("X").PadLeft(8, '0') +
-                                     "  1=" + registersIntArray[1].ToString("X").PadLeft(8, '0') +
-                                     "  2=" + registersIntArray[2].ToString("X").PadLeft(8, '0') +
-                                     "  3=" + registersIntArray[3].ToString("X").PadLeft(8, '0') + " ");
-
-            traceLog.WriteLineToLog(
-                                    "        4=" + registersIntArray[4].ToString("X").PadLeft(8, '0') +
-                                    "  " + "5=" + registersIntArray[5].ToString("X").PadLeft(8, '0') +
-                                    "  " + "6=" + registersIntArray[6].ToString("X").PadLeft(8, '0') +
-                                    "  " + "7=" + registersIntArray[7].ToString("X").PadLeft(8, '0') +
-                                    "  " + "8=" + registersIntArray[8].ToString("X").PadLeft(8, '0') +
-                                    "  " + "9=" + registersIntArray[9].ToString("X").PadLeft(8, '0') + " ");
-
-            traceLog.WriteLineToLog(
-                               "       10=" + registersIntArray[10].ToString("X").PadLeft(8, '0') +
-                                     " 11=" + registersIntArray[11].ToString("X").PadLeft(8, '0') +
-                                     " 12=" + registersIntArray[12].ToString("X").PadLeft(8, '0') +
-                                     " 13=" + registersIntArray[13].ToString("X").PadLeft(8, '0') +
-                                     " 14=" + registersIntArray[14].ToString("X").PadLeft(8, '0') + " ");
+                                    " 0=" + registersIntArray[0].ToString("X").PadLeft(8, '0') +
+                                    " 1=" + registersIntArray[1].ToString("X").PadLeft(8, '0') +
+                                    " 2=" + registersIntArray[2].ToString("X").PadLeft(8, '0') +
+                                    " 3=" + registersIntArray[3].ToString("X").PadLeft(8, '0') +
+                                    " 4=" + registersIntArray[4].ToString("X").PadLeft(8, '0') +
+                                    " 5=" + registersIntArray[5].ToString("X").PadLeft(8, '0') +
+                                    " 6=" + registersIntArray[6].ToString("X").PadLeft(8, '0') +
+                                    " 7=" + registersIntArray[7].ToString("X").PadLeft(8, '0') +
+                                    " 8=" + registersIntArray[8].ToString("X").PadLeft(8, '0') +
+                                    " 9=" + registersIntArray[9].ToString("X").PadLeft(8, '0') +
+                                    " 10=" + registersIntArray[10].ToString("X").PadLeft(8, '0') +
+                                    " 11=" + registersIntArray[11].ToString("X").PadLeft(8, '0') +
+                                    " 12=" + registersIntArray[12].ToString("X").PadLeft(8, '0') +
+                                    " 13=" + registersIntArray[13].ToString("X").PadLeft(8, '0') +
+                                    " 14=" + registersIntArray[14].ToString("X").PadLeft(8, '0'));
+            traceLog.updateStepCounterByOne();
         }
 
         #region Misellinious

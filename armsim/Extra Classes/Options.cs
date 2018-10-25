@@ -62,14 +62,6 @@ namespace armsim.Extra_Classes
             }
         }
 
-        internal Program Program
-        {
-            get => default(Program);
-            set
-            {
-            }
-        }
-
         public void ShowHelp(OptionSet p)
         {
             Console.WriteLine("USAGE: armsim.exe [OPTIONS]");

@@ -24,7 +24,10 @@ namespace armsim
                 TestMemory.runTests();
                 //TestCPU.runtTests();
                 TestRegisters.runTests();
+                TestBarrelShifter.runTests();
+
                 TestDecodeExecuteSimI.runTests();
+                TestDecodeExecuteSimII.runTests();
 
                 Console.WriteLine("All UNIT TESTS passed! Exiting ...");
                 Environment.Exit(0);

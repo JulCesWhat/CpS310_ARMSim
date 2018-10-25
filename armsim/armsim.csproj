@@ -78,15 +78,21 @@
     <Compile Include="Prototype\CPU.cs" />
     <Compile Include="Prototype\Memory.cs" />
     <Compile Include="Prototype\Registers.cs" />
+    <Compile Include="Simulator II\ArmSimFormRef.cs" />
+    <Compile Include="Simulator II\Branch.cs" />
+    <Compile Include="Simulator II\Bx.cs" />
     <Compile Include="Simulator I\BarrelShifter.cs" />
     <Compile Include="Simulator I\DataProcessing.cs" />
+    <Compile Include="Simulator I\Extras.cs" />
     <Compile Include="Simulator I\Instruction.cs" />
     <Compile Include="Simulator I\LoadAndStore.cs" />
     <Compile Include="Simulator I\LoadAndStoreMul.cs" />
     <Compile Include="Simulator I\Mul.cs" />
     <Compile Include="Simulator I\SecOperand.cs" />
+    <Compile Include="Unit Tests\TestBarrelShifter.cs" />
     <Compile Include="Unit Tests\TestCPU.cs" />
     <Compile Include="Unit Tests\TestDecodeExecuteSimI.cs" />
+    <Compile Include="Unit Tests\TestDecodeExecuteSimII.cs" />
     <Compile Include="Unit Tests\TestMemory.cs" />
     <Compile Include="Unit Tests\TestRegisters.cs" />
   </ItemGroup>
