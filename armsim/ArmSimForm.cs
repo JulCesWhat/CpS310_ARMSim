@@ -20,7 +20,7 @@ namespace armsim
         Subject subject;
 
         Computer computer;
-        Queue charsQueue = new Queue();
+        Queue<char> charsQueue = new Queue<char>();
         string currentFileName;
         string filePath;
         uint memoryPanelNoRowsToShow;
@@ -36,6 +36,8 @@ namespace armsim
 
             // Add event handler to write a charatecter to terminal when CPU a byte in Memory from address 0x00100001
             ArmSimFormRef.OnWriteCharToTerminal += ArmSimFormRef_OnWriteCharToTerminal;
+            ArmSimFormRef.OnCheckCharsQueueContainsReturn += ArmSimFormRef_OnCheckCharsQueueContainsReturn;
+            ArmSimFormRef.OnDequeCharsQueue += ArmSimFormRef_OnDequeCharsQueue;
 
             // set object reference to computer
             this.computer = _computer;
@@ -459,6 +461,9 @@ namespace armsim
 
         // This delegate enables asynchronous calls for writing a char to terminal
         delegate void ArmSimFormRef_OnWriteCharToTerminal_delegate(string text);
+        delegate char ArmSimFormRef_OnDequeCharsQueue_delegate();
+        delegate bool ArmSimFormRef_OnCheckCharsQueueContainsReturn_delegate();
+
 
         // EVENT HANDLER called by Static Class ArmSimFormRef
         // This method demonstrates a pattern for making thread-safe
@@ -496,35 +501,58 @@ namespace armsim
         //           - Write 0 if queue is empty
         public void WriteCharToTerminal(string strMessage)
         {
-            string chr = "";
-
-            if (charsQueue.Count > 0)
-            {
-                chr = (string)charsQueue.Dequeue();
-                terminlaTextBox.AppendText(chr);
-            }
-            else
-            {
-                chr = "0";
-                terminlaTextBox.AppendText(chr);
-            }
-            //Console.WriteLine("Appended char: " + chr);
-
+            string chr = (computer.getRegister0()).ToString();
+            terminlaTextBox.AppendText(chr);
         }
 
         // FUNCTION: - Enqueue the characted pressed to charsQueue
         private void terminlaTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            string chr = e.KeyChar.ToString();
+            char chr = e.KeyChar;
+            if (e.KeyChar == (char)13)
+            {
+                Console.WriteLine("Enter has been pressed!!");
+            }
             charsQueue.Enqueue(chr);
         }
 
-        // private void testTerminalButton_Click(object sender, EventArgs e)
-        // {
-        //     computer.TestArmSimFormRef_OnWriteCharToTerminal();
-        // }
+        public bool ArmSimFormRef_OnCheckCharsQueueContainsReturn()
+        {
+            if (this.terminlaTextBox.InvokeRequired)
+            {
+                ArmSimFormRef_OnCheckCharsQueueContainsReturn_delegate d = new ArmSimFormRef_OnCheckCharsQueueContainsReturn_delegate(ArmSimFormRef_OnCheckCharsQueueContainsReturn);
+                return (bool)this.Invoke(d);
+            }
+            else
+            {
+                //terminlaTextBox.Invoke;
+                return checkCharsQueueContainsReturn();
+            }
+        }
 
+        public bool checkCharsQueueContainsReturn()
+        {
+            return charsQueue.Contains((char)13);
+        }
 
+        public char ArmSimFormRef_OnDequeCharsQueue()
+        {
+            if (this.terminlaTextBox.InvokeRequired)
+            {
+                ArmSimFormRef_OnDequeCharsQueue_delegate d = new ArmSimFormRef_OnDequeCharsQueue_delegate(ArmSimFormRef_OnDequeCharsQueue);
+                return (char)this.Invoke(d);
+            }
+            else
+            {
+                //terminlaTextBox.Invoke;
+                return dequeCharsQueue();
+            }
+        }
+
+        public char dequeCharsQueue()
+        {
+            return charsQueue.Dequeue();
+        }
         #endregion
 
     }

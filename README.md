@@ -1,5 +1,5 @@
 # Header info:
-Julio Cesar Whatley, CpS310, 9/26/2018, 22 hrs
+Julio Cesar Whatley, CpS310, 11/07/2018, 12 hrs
 
 #Overview:
 The application loads a arm programs and displays it on the GUI.
@@ -18,7 +18,7 @@ Automatic tracing and logging.
 Start the project and run it with desired flags.
 
 #Bug Report:
-Adding break points is not totally working.
+None
 
 #[Project Journa](https://bju-my.sharepoint.com/:w:/g/personal/jwhat331_students_bju_edu/EZOxQ8qZh1hNiOe8rCuwmjkBze4aQgyK0vMvWE2qtDUV1g?e=kDB75s):
 

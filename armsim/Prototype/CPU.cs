@@ -188,7 +188,49 @@ namespace armsim.Prototype
                 lastDisString += tempStr;
 
                 writeInfoToTraceLogForSimI();
-                return true; // true to stop executing more instructions
+                switch (swi_imm.ToString("x").PadLeft(2, '0'))
+                {
+                    case "00":
+                        ArmSimFormRef.WriteCharToTerminal("Hello World!");
+                        break;
+                    case "11":
+                        return true;
+                    case "6a":
+                        while (!ArmSimFormRef.checkCharsQueueContainsReturn())
+                        {
+                            Thread.Sleep(2000);
+                        }
+                        bool gotReturnValue = false;
+                        uint memoryBufferPlace = 0;
+                        while (!gotReturnValue)
+                        {
+                            char readValue = ArmSimFormRef.dequeCharsQueue();
+                            if (readValue == (char)13)
+                            {
+                                gotReturnValue = true;
+                                if (memoryBufferPlace < registers.getRegNValue(2))
+                                {
+                                    memory.WriteByte(registers.getRegNValue(1) + memoryBufferPlace, 0x0);
+                                } else
+                                {
+                                    memory.WriteByte(registers.getRegNValue(1) + (memoryBufferPlace - 1), 0x0);
+                                }
+                            }
+                            if (memoryBufferPlace < registers.getRegNValue(2))
+                            {
+                                Console.WriteLine(readValue);
+                                memory.WriteByte(registers.getRegNValue(1) + memoryBufferPlace, Convert.ToByte(readValue));
+                                memoryBufferPlace++;
+                            }
+                        }
+
+                        //memory.WriteByte(registers.getRegNValue(1), 0x35);
+                        //memory.WriteByte(registers.getRegNValue(1) + 1, 0x0);
+                        break;
+                    default:
+                        break;
+                }
+                return false; // true to stop executing more instructions
             }
 
             // MUL
@@ -441,6 +483,11 @@ namespace armsim.Prototype
         internal string getDisassembledLastInstructionExecuted()
         {
             return lastDisString;
+        }
+
+        internal char getRegister0()
+        {
+            return (char)registers.getRegNValue(0);
         }
         #endregion
     }

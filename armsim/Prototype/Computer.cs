@@ -14,6 +14,7 @@ namespace armsim.Prototype
     {
         Subject subject;
 
+        bool execActive = false;
         Memory memory;
         Registers registers;
         CPU cpu;
@@ -27,6 +28,7 @@ namespace armsim.Prototype
             // tie reference to subject and add observer to observers list
             this.subject = _subject;
             subject.registerObserver(this);
+            execActive = _arguments.execEnabled;
 
             // initialize debug streams
             debugLog = new DebugLog();
@@ -62,10 +64,13 @@ namespace armsim.Prototype
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
             this.run();
-            this.traceLogFlush();
-            this.traceLogClose();
-            Thread.Sleep(5000);
-            Environment.Exit(0);
+            if (execActive)
+            {
+                this.traceLogFlush();
+                this.traceLogClose();
+                Thread.Sleep(5000);
+                Environment.Exit(0);
+            }
         }
 
         ///  FUNTION: - Called by GUI to stop thread or called at the end of the program
@@ -342,6 +347,11 @@ namespace armsim.Prototype
         {
             return cpu.getDisassembledLastInstructionExecuted();
         }
+
+        internal char getRegister0()
+        {
+            return cpu.getRegister0();
+        } 
 
         #endregion
     }

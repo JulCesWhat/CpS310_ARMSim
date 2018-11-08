@@ -9,6 +9,10 @@ namespace armsim.Simulator_II
     // Delegate to write a character into the terminal panel
     public delegate void WriteCharToTerminalDelegate(string strMessage);
 
+    public delegate char dequeCharsQueueDelegate();
+
+    public delegate bool checkCharsQueueContainsReturnDelegate();
+
     // ArmSimFormRef is has reference to ArmSimForm class and its methods.
     // The methods in this class are visible in all classes.
     public static class ArmSimFormRef
@@ -16,6 +20,8 @@ namespace armsim.Simulator_II
         public static ArmSimForm mainwin;
 
         public static event WriteCharToTerminalDelegate OnWriteCharToTerminal;
+        public static event dequeCharsQueueDelegate OnDequeCharsQueue;
+        public static event checkCharsQueueContainsReturnDelegate OnCheckCharsQueueContainsReturn;
 
         // FUNCTION:  - Run event handler ArmSimFormRef_OnWriteCharToTerminal() in ArmSimForm class which
         //              Writes a char to terminal from field charQueue in ArmSimForm class
@@ -35,5 +41,39 @@ namespace armsim.Simulator_II
             else
                 OnWriteCharToTerminal(strMessage);
         }
+
+
+        public static char dequeCharsQueue()
+        {
+            return ThreadSafeDequeCharsQueue();
+        }
+
+        private static char ThreadSafeDequeCharsQueue()
+        {
+            if (mainwin != null && mainwin.InvokeRequired)  // we are in a different thread to the main window
+            {
+                return (char)mainwin.Invoke(new dequeCharsQueueDelegate(ThreadSafeDequeCharsQueue));  // call self from main thread
+            }
+            else
+                return OnDequeCharsQueue();
+        }
+
+
+
+        public static bool checkCharsQueueContainsReturn()
+        {
+            return ThreadSafeCheckCharsQueueContainsReturn();
+        }
+
+        private static bool ThreadSafeCheckCharsQueueContainsReturn()
+        {
+            if (mainwin != null && mainwin.InvokeRequired)  // we are in a different thread to the main window
+            {
+                return (bool)mainwin.Invoke(new checkCharsQueueContainsReturnDelegate(ThreadSafeCheckCharsQueueContainsReturn));  // call self from main thread
+            }
+            else
+                return OnCheckCharsQueueContainsReturn();
+        }
+
     }
 }
